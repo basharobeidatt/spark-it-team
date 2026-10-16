@@ -1,181 +1,174 @@
-const sidebar = document.getElementById('sidebar');
-const mobileToggle = document.getElementById('mobileToggle');
-const langBtn = document.getElementById('langBtn');
+```javascript
+"use strict";
 
-let currentLang = localStorage.getItem('spark-language') || 'en';
+/* =====================================
+   SPARK - وظائف الموقع ونموذج الانضمام
+   ===================================== */
 
-if (mobileToggle && sidebar) {
-mobileToggle.addEventListener('click', () => {
-const isOpen = sidebar.classList.toggle('open');
-mobileToggle.setAttribute('aria-expanded', String(isOpen));
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ---------------------------------
+    // 1. تهيئة نموذج الانضمام
+    // ---------------------------------
+
+    const form = document.querySelector("#joinForm");
+
+    if (form) {
+        const notice = document.querySelector("#formNotice");
+        const submitButton = document.querySelector("#submitApplication");
+
+        function showMessage(message, type) {
+            notice.textContent = message;
+            notice.className = "visible " + type;
+        }
+
+        function getValue(id) {
+            const field = document.getElementById(id);
+            return field ? field.value.trim() : "";
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            // تحقق من الحقول المطلوبة
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // تأكد من توفر مكتبة Supabase
+            if (!window.supabase || !window.supabase.createClient) {
+                showMessage(
+                    "تعذّر تحميل مكتبة الاتصال. حدّث الصفحة وحاول مرة أخرى.",
+                    "error"
+                );
+                console.error("Supabase JavaScript library was not loaded.");
+                return;
+            }
+
+            // تأكد من توفر الإعدادات
+            if (
+                !window.SPARK_SUPABASE_URL ||
+                !window.SPARK_SUPABASE_ANON_KEY
+            ) {
+                showMessage(
+                    "إعدادات قاعدة البيانات غير موجودة. تأكد من ملف supabase-config.js.",
+                    "error"
+                );
+                console.error("Supabase configuration is missing.");
+                return;
+            }
+
+            const team = getValue("team");
+
+            if (!["Games", "Social Media"].includes(team)) {
+                showMessage("اختَر الفريق الذي ترغب بالانضمام إليه.", "error");
+                return;
+            }
+
+            const application = {
+                full_name: getValue("name"),
+                student_id: getValue("studentId"),
+                email: getValue("email"),
+                university_major: getValue("major"),
+                university_year: getValue("year"),
+                phone: getValue("phone"),
+                team_choice: team,
+                skills: getValue("skills") || null,
+                motivation: getValue("reason")
+            };
+
+            submitButton.disabled = true;
+            submitButton.textContent = "جارٍ إرسال الطلب...";
+
+            showMessage("جارٍ إرسال طلبك، انتظر قليلًا...", "success");
+
+            try {
+                const client = window.supabase.createClient(
+                    window.SPARK_SUPABASE_URL,
+                    window.SPARK_SUPABASE_ANON_KEY
+                );
+
+                const { error } = await client
+                    .from("join_requests")
+                    .insert([application]);
+
+                if (error) {
+                    console.error("Supabase insert error:", error);
+
+                    showMessage(
+                        "لم نتمكن من إرسال الطلب. " +
+                        "تفاصيل الخطأ: " + error.message,
+                        "error"
+                    );
+
+                    return;
+                }
+
+                showMessage(
+                    "تم إرسال طلبك بنجاح! 🎉 شكرًا لاهتمامك بالانضمام إلى SPARK.",
+                    "success"
+                );
+
+                form.reset();
+
+            } catch (error) {
+                console.error("Unexpected submission error:", error);
+
+                showMessage(
+                    "حدث خطأ غير متوقع أثناء الإرسال. افتح Console لمعرفة التفاصيل.",
+                    "error"
+                );
+
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "إرسال طلب الانضمام";
+            }
+        });
+    }
+
+    // ---------------------------------
+    // 2. القائمة الجانبية على الهاتف
+    // ---------------------------------
+
+    const menuButton = document.querySelector(
+        ".menu-toggle, .mobile-menu-toggle, #menuToggle"
+    );
+
+    const sidebar = document.querySelector(
+        ".sidebar, .nav-links, #sidebar"
+    );
+
+    if (menuButton && sidebar) {
+        menuButton.addEventListener("click", function () {
+            sidebar.classList.toggle("active");
+            sidebar.classList.toggle("open");
+        });
+    }
+
+    // ---------------------------------
+    // 3. تبديل اللغة إذا كانت عناصرها موجودة
+    // ---------------------------------
+
+    const languageButtons = document.querySelectorAll(
+        "[data-language], .language-toggle, #languageToggle"
+    );
+
+    languageButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            const selectedLanguage =
+                button.dataset.language ||
+                (document.documentElement.lang === "ar" ? "en" : "ar");
+
+            if (selectedLanguage === "en") {
+                document.documentElement.lang = "en";
+                document.documentElement.dir = "ltr";
+            } else {
+                document.documentElement.lang = "ar";
+                document.documentElement.dir = "rtl";
+            }
+        });
+    });
+
 });
-}
-
-document.querySelectorAll('.navlinks a').forEach(a => {
-a.addEventListener('click', () => {
-if (sidebar) sidebar.classList.remove('open');
-if (mobileToggle) mobileToggle.setAttribute('aria-expanded', 'false');
-});
-});
-
-if (sidebar) {
-document.addEventListener('keydown', e => {
-if (e.key === 'Escape') {
-sidebar.classList.remove('open');
-if (mobileToggle) mobileToggle.setAttribute('aria-expanded', 'false');
-}
-});
-}
-
-document.addEventListener('click', e => {
-if (
-sidebar &&
-mobileToggle &&
-sidebar.classList.contains('open') &&
-!sidebar.contains(e.target) &&
-!mobileToggle.contains(e.target)
-) {
-sidebar.classList.remove('open');
-mobileToggle.setAttribute('aria-expanded', 'false');
-}
-});
-
-function setLanguage(lang) {
-currentLang = lang;
-localStorage.setItem('spark-language', lang);
-
-document.documentElement.lang = lang;
-document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-document.querySelectorAll('[data-en][data-ar]').forEach(el => {
-el.innerHTML = el.dataset[lang];
-});
-
-if (langBtn) {
-langBtn.textContent = lang === 'en' ? 'العربية' : 'English';
-}
-}
-
-if (langBtn) {
-langBtn.addEventListener('click', () => {
-setLanguage(currentLang === 'en' ? 'ar' : 'en');
-});
-}
-
-setLanguage(currentLang);
-
-document.querySelectorAll('[data-year]').forEach(el => {
-el.textContent = new Date().getFullYear();
-});
-
-/*
-
-* SPARK application submission
-*
-* The form will submit only when the Supabase client is configured.
-* It expects window.supabase to be the Supabase JS library,
-* and SPARK_SUPABASE_URL / SPARK_SUPABASE_ANON_KEY to be configured.
-  */
-
-document.querySelectorAll('form[data-join-form]').forEach(form => {
-form.addEventListener('submit', async e => {
-e.preventDefault();
-
 ```
-const notice = form.querySelector('.notice');
-const button = form.querySelector('button[type="submit"]');
-
-const showMessage = (en, ar, isError = false) => {
-  if (!notice) return;
-  notice.style.display = 'block';
-  notice.textContent = currentLang === 'ar' ? ar : en;
-  notice.setAttribute('role', isError ? 'alert' : 'status');
-};
-
-const config = window.SPARK_SUPABASE_URL && window.SPARK_SUPABASE_ANON_KEY;
-const supabaseLibrary = window.supabase;
-
-if (!config || !supabaseLibrary || !supabaseLibrary.createClient) {
-  showMessage(
-    'The application system is not configured yet. Please try again later.',
-    'نظام التقديم غير مفعّل بعد. يرجى المحاولة لاحقًا.',
-    true
-  );
-  return;
-}
-
-const get = name => form.elements[name]?.value?.trim() || '';
-
-const application = {
-  full_name: get('name'),
-  student_id: get('studentId'),
-  email: get('email'),
-  university_major: get('major'),
-  university_year: get('year'),
-  phone: get('phone'),
-  team_choice: get('team'),
-  skills: get('skills'),
-  motivation: get('reason')
-};
-
-if (
-  !application.full_name ||
-  !application.student_id ||
-  !application.email ||
-  !application.university_major ||
-  !application.university_year ||
-  !application.phone ||
-  !application.team_choice ||
-  !application.motivation
-) {
-  showMessage(
-    'Please complete all required fields.',
-    'يرجى تعبئة جميع الحقول المطلوبة.',
-    true
-  );
-  return;
-}
-
-if (button) {
-  button.disabled = true;
-  button.setAttribute('aria-busy', 'true');
-}
-
-showMessage('Submitting your application…', 'جارٍ إرسال طلبك…');
-
-try {
-  const client = supabaseLibrary.createClient(
-    window.SPARK_SUPABASE_URL,
-    window.SPARK_SUPABASE_ANON_KEY
-  );
-
-  const { error } = await client
-    .from('join_requests')
-    .insert([application]);
-
-  if (error) throw error;
-
-  form.reset();
-
-  showMessage(
-    'Your application was submitted successfully! Thank you for your interest in SPARK.',
-    'تم إرسال طلبك بنجاح! شكرًا لاهتمامك بالانضمام إلى SPARK.'
-  );
-} catch (error) {
-  console.error('SPARK application submission failed:', error);
-
-  showMessage(
-    'We could not submit your application. Please try again later.',
-    'تعذّر إرسال طلبك. يرجى المحاولة مرة أخرى لاحقًا.',
-    true
-  );
-} finally {
-  if (button) {
-    button.disabled = false;
-    button.removeAttribute('aria-busy');
-  }
-}
-```
-
-});
-});
