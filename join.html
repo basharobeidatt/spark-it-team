@@ -5,12 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#101828">
-
     <title>انضم إلى SPARK | فريق تكنولوجيا المعلومات</title>
 
-<link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
+
     <style>
-        /* تنسيق مستقل لنموذج الانضمام */
         .join-container {
             width: min(92%, 700px);
             margin: 40px auto;
@@ -32,65 +31,58 @@
             margin-bottom: 28px;
         }
 
-        .form-card {
+        .join-container .form-card {
             display: grid;
             gap: 18px;
             padding: clamp(18px, 4vw, 32px);
-            background: #ffffff;
-            color: #182230;
+            background: #fff !important;
+            color: #182230 !important;
             border: 1px solid #e1e5eb;
             border-radius: 18px;
-            box-shadow: 0 8px 28px rgba(16, 24, 40, 0.08);
+            box-shadow: 0 8px 28px rgba(16, 24, 40, .08);
         }
 
-        .form-card label {
+        .join-container .form-card label {
             display: grid;
             gap: 8px;
-            color: #182230;
+            color: #182230 !important;
             font-weight: 600;
         }
 
-        .form-card input,
-        .form-card select,
-        .form-card textarea {
+        .join-container .form-card input,
+        .join-container .form-card select,
+        .join-container .form-card textarea {
             display: block;
             width: 100%;
             box-sizing: border-box;
             padding: 13px 14px;
             color: #182230 !important;
-            background: #ffffff !important;
+            background: #fff !important;
             border: 1px solid #cbd2dc !important;
             border-radius: 9px;
             font-family: inherit;
             font-size: 16px;
             line-height: 1.5;
-            outline: none;
             box-shadow: none !important;
         }
 
-        .form-card input::placeholder,
-        .form-card textarea::placeholder {
-            color: #7b8492 !important;
-            opacity: 1;
+        .join-container .form-card input:focus,
+        .join-container .form-card select:focus,
+        .join-container .form-card textarea:focus {
+            outline: 2px solid #2563eb;
+            outline-offset: 1px;
         }
 
-        .form-card input:focus,
-        .form-card select:focus,
-        .form-card textarea:focus {
-            border-color: #2563eb !important;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
-        }
-
-        .form-card textarea {
+        .join-container .form-card textarea {
             min-height: 115px;
             resize: vertical;
         }
 
-        .form-card button[type="submit"] {
+        .join-container #submitApplication {
             width: 100%;
             min-height: 48px;
             padding: 13px 18px;
-            color: #ffffff !important;
+            color: #fff !important;
             background: #2563eb !important;
             border: none;
             border-radius: 10px;
@@ -98,16 +90,11 @@
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: opacity 0.2s ease;
         }
 
-        .form-card button[type="submit"]:hover {
-            opacity: 0.9;
-        }
-
-        .form-card button[type="submit"]:disabled {
+        .join-container #submitApplication:disabled {
+            opacity: .65;
             cursor: wait;
-            opacity: 0.65;
         }
 
         #formNotice {
@@ -147,54 +134,35 @@
 <body>
 
     <main class="join-container">
-        <h1>انضم إلى SPARK ⚡</h1>
+        <h1>⚡ انضم إلى SPARK</h1>
 
         <p>
             عندك شغف بالتكنولوجيا والألعاب وصناعة المحتوى؟
             عبّي النموذج التالي وقدّم طلب الانضمام لفريقنا.
         </p>
 
-<form class="form-card" id="joinForm" action="#" method="post">
+        <form class="form-card" id="joinForm" method="post" novalidate>
+
             <label for="name">
                 الاسم الكامل
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    autocomplete="name"
-                    required
-                >
+                <input type="text" id="name" name="name"
+                       autocomplete="name" required>
             </label>
 
             <label for="studentId">
                 الرقم الجامعي
-                <input
-                    type="text"
-                    id="studentId"
-                    name="studentId"
-                    required
-                >
+                <input type="text" id="studentId" name="studentId" required>
             </label>
 
             <label for="email">
                 البريد الإلكتروني
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    autocomplete="email"
-                    required
-                >
+                <input type="email" id="email" name="email"
+                       autocomplete="email" required>
             </label>
 
             <label for="major">
                 التخصص الجامعي
-                <input
-                    type="text"
-                    id="major"
-                    name="major"
-                    required
-                >
+                <input type="text" id="major" name="major" required>
             </label>
 
             <label for="year">
@@ -211,13 +179,8 @@
 
             <label for="phone">
                 رقم الهاتف
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    autocomplete="tel"
-                    required
-                >
+                <input type="tel" id="phone" name="phone"
+                       autocomplete="tel" required>
             </label>
 
             <label for="team">
@@ -231,20 +194,13 @@
 
             <label for="skills">
                 المهارات والخبرات
-                <textarea
-                    id="skills"
-                    name="skills"
-                    placeholder="مثلاً: Unity، برمجة، تصميم، مونتاج..."
-                ></textarea>
+                <textarea id="skills" name="skills"
+                    placeholder="مثلاً: Unity، برمجة، تصميم، مونتاج..."></textarea>
             </label>
 
             <label for="reason">
                 لماذا تريد الانضمام إلى SPARK؟
-                <textarea
-                    id="reason"
-                    name="reason"
-                    required
-                ></textarea>
+                <textarea id="reason" name="reason" required></textarea>
             </label>
 
             <div id="formNotice" role="status" aria-live="polite"></div>
@@ -252,14 +208,16 @@
             <button type="submit" id="submitApplication">
                 إرسال طلب الانضمام
             </button>
-
         </form>
 
         <a class="join-back" href="index.html">العودة إلى الصفحة الرئيسية</a>
     </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="script.js"></script>
+    <!-- تحميل المكتبة والإعدادات قبل كود الموقع -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+
 </body>
 </html>
+```
