@@ -4,15 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#101828">
+
     <title>انضم إلى SPARK | فريق تكنولوجيا المعلومات</title>
 
-    <!-- اربط ملف التصميم الموجود في مشروعك -->
-    <link rel="stylesheet" href="styles.css">
-
+<link rel="stylesheet" href="styles.css">
     <style>
+        /* تنسيق مستقل لنموذج الانضمام */
         .join-container {
             width: min(92%, 700px);
             margin: 40px auto;
+            color: #182230;
         }
 
         .join-container h1,
@@ -20,55 +22,100 @@
             text-align: center;
         }
 
+        .join-container h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 12px;
+        }
+
+        .join-container > p {
+            line-height: 1.9;
+            margin-bottom: 28px;
+        }
+
         .form-card {
             display: grid;
-            gap: 16px;
-            padding: 24px;
-            border: 1px solid #ddd;
-            border-radius: 16px;
+            gap: 18px;
+            padding: clamp(18px, 4vw, 32px);
+            background: #ffffff;
+            color: #182230;
+            border: 1px solid #e1e5eb;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(16, 24, 40, 0.08);
         }
 
         .form-card label {
             display: grid;
-            gap: 7px;
+            gap: 8px;
+            color: #182230;
             font-weight: 600;
         }
 
         .form-card input,
         .form-card select,
         .form-card textarea {
+            display: block;
             width: 100%;
             box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font: inherit;
+            padding: 13px 14px;
+            color: #182230 !important;
+            background: #ffffff !important;
+            border: 1px solid #cbd2dc !important;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 16px;
+            line-height: 1.5;
+            outline: none;
+            box-shadow: none !important;
+        }
+
+        .form-card input::placeholder,
+        .form-card textarea::placeholder {
+            color: #7b8492 !important;
+            opacity: 1;
+        }
+
+        .form-card input:focus,
+        .form-card select:focus,
+        .form-card textarea:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
         }
 
         .form-card textarea {
-            min-height: 110px;
+            min-height: 115px;
             resize: vertical;
         }
 
-        .form-card button {
-            padding: 13px;
-            border: 0;
-            border-radius: 8px;
+        .form-card button[type="submit"] {
+            width: 100%;
+            min-height: 48px;
+            padding: 13px 18px;
+            color: #ffffff !important;
+            background: #2563eb !important;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            font: inherit;
-            font-weight: bold;
+            transition: opacity 0.2s ease;
         }
 
-        .form-card button:disabled {
+        .form-card button[type="submit"]:hover {
+            opacity: 0.9;
+        }
+
+        .form-card button[type="submit"]:disabled {
             cursor: wait;
-            opacity: .65;
+            opacity: 0.65;
         }
 
         #formNotice {
             display: none;
-            padding: 12px;
-            border-radius: 8px;
-            line-height: 1.7;
+            padding: 13px 15px;
+            border-radius: 9px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
         }
 
         #formNotice.visible {
@@ -78,19 +125,26 @@
         #formNotice.success {
             color: #166534;
             background: #dcfce7;
+            border: 1px solid #86efac;
         }
 
         #formNotice.error {
             color: #991b1b;
             background: #fee2e2;
+            border: 1px solid #fca5a5;
+        }
+
+        .join-back {
+            display: block;
+            width: fit-content;
+            margin: 24px auto;
+            color: #2563eb;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
-
-    <!-- إذا كان عندك شريط تنقل أصلي في join.html،
-         يمكنك إبقاءه بدل هذا العنوان البسيط. -->
 
     <main class="join-container">
         <h1>انضم إلى SPARK ⚡</h1>
@@ -100,7 +154,7 @@
             عبّي النموذج التالي وقدّم طلب الانضمام لفريقنا.
         </p>
 
-        <form class="form-card" id="joinForm" data-join-form>
+        <form class="form-card" id="joinForm">
 
             <label for="name">
                 الاسم الكامل
@@ -201,9 +255,11 @@
             </button>
 
         </form>
+
+        <a class="join-back" href="index.html">العودة إلى الصفحة الرئيسية</a>
     </main>
 
-    <!-- مهم: يجب تحميل المكتبة والإعدادات قبل script.js -->
+    <!-- يجب تحميل المكتبة ثم الإعدادات ثم كود الموقع -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="script.js"></script>
