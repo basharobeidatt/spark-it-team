@@ -1,58 +1,66 @@
 ```javascript
 "use strict";
 
-/* =====================================
-   SPARK - وظائف الموقع ونموذج الانضمام
-   ===================================== */
+/* =========================================
+   SPARK - Join Form and Shared Site Functions
+   ========================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ---------------------------------
-    // 1. تهيئة نموذج الانضمام
-    // ---------------------------------
+    // -----------------------------------------
+    // 1. Join application form
+    // -----------------------------------------
 
-    const form = document.querySelector("#joinForm");
+    const form = document.getElementById("joinForm");
 
     if (form) {
-        const notice = document.querySelector("#formNotice");
-        const submitButton = document.querySelector("#submitApplication");
+        const notice = document.getElementById("formNotice");
+        const submitButton = document.getElementById("submitApplication");
 
         function showMessage(message, type) {
+            if (!notice) return;
+
             notice.textContent = message;
             notice.className = "visible " + type;
+            notice.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
         }
 
         function getValue(id) {
-            const field = document.getElementById(id);
-            return field ? field.value.trim() : "";
+            const element = document.getElementById(id);
+            return element ? element.value.trim() : "";
         }
 
         form.addEventListener("submit", async function (event) {
             event.preventDefault();
 
-            // تحقق من الحقول المطلوبة
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
 
-            // تأكد من توفر مكتبة Supabase
-            if (!window.supabase || !window.supabase.createClient) {
-                showMessage(
-                    "تعذّر تحميل مكتبة الاتصال. حدّث الصفحة وحاول مرة أخرى.",
-                    "error"
-                );
-                console.error("Supabase JavaScript library was not loaded.");
+            if (!submitButton || !notice) {
+                console.error("The submit button or form notice is missing.");
                 return;
             }
 
-            // تأكد من توفر الإعدادات
+            if (!window.supabase || !window.supabase.createClient) {
+                showMessage(
+                    "تعذّر تحميل مكتبة الاتصال بقاعدة البيانات. تأكد من اتصال الإنترنت ثم حدّث الصفحة.",
+                    "error"
+                );
+                console.error("Supabase library is unavailable.");
+                return;
+            }
+
             if (
                 !window.SPARK_SUPABASE_URL ||
                 !window.SPARK_SUPABASE_ANON_KEY
             ) {
                 showMessage(
-                    "إعدادات قاعدة البيانات غير موجودة. تأكد من ملف supabase-config.js.",
+                    "إعدادات Supabase غير موجودة. تأكد من ملف supabase-config.js.",
                     "error"
                 );
                 console.error("Supabase configuration is missing.");
@@ -61,8 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const team = getValue("team");
 
-            if (!["Games", "Social Media"].includes(team)) {
-                showMessage("اختَر الفريق الذي ترغب بالانضمام إليه.", "error");
+            if (team !== "Games" && team !== "Social Media") {
+                showMessage(
+                    "يرجى اختيار الفريق الذي ترغب بالانضمام إليه.",
+                    "error"
+                );
                 return;
             }
 
@@ -81,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
             submitButton.disabled = true;
             submitButton.textContent = "جارٍ إرسال الطلب...";
 
-            showMessage("جارٍ إرسال طلبك، انتظر قليلًا...", "success");
+            showMessage("جارٍ إرسال طلبك...", "success");
 
             try {
                 const client = window.supabase.createClient(
@@ -89,19 +100,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.SPARK_SUPABASE_ANON_KEY
                 );
 
-                const { error } = await client
+                const result = await client
                     .from("join_requests")
                     .insert([application]);
 
-                if (error) {
-                    console.error("Supabase insert error:", error);
-
-                    showMessage(
-                        "لم نتمكن من إرسال الطلب. " +
-                        "تفاصيل الخطأ: " + error.message,
-                        "error"
+                if (result.error) {
+                    console.error(
+                        "Supabase returned an error:",
+                        result.error
                     );
 
+                    showMessage(
+                        "تعذّر إرسال الطلب: " + result.error.message,
+                        "error"
+                    );
                     return;
                 }
 
@@ -113,10 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 form.reset();
 
             } catch (error) {
-                console.error("Unexpected submission error:", error);
+                console.error("Submission failed:", error);
 
                 showMessage(
-                    "حدث خطأ غير متوقع أثناء الإرسال. افتح Console لمعرفة التفاصيل.",
+                    "حدث خطأ أثناء الاتصال بقاعدة البيانات. تحقق من الإنترنت ثم حاول مرة أخرى.",
                     "error"
                 );
 
@@ -127,9 +139,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ---------------------------------
-    // 2. القائمة الجانبية على الهاتف
-    // ---------------------------------
+    // -----------------------------------------
+    // 2. Mobile navigation, if present
+    // -----------------------------------------
 
     const menuButton = document.querySelector(
         ".menu-toggle, .mobile-menu-toggle, #menuToggle"
@@ -146,9 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ---------------------------------
-    // 3. تبديل اللغة إذا كانت عناصرها موجودة
-    // ---------------------------------
+    // -----------------------------------------
+    // 3. Language buttons, if present
+    // -----------------------------------------
 
     const languageButtons = document.querySelectorAll(
         "[data-language], .language-toggle, #languageToggle"
@@ -156,11 +168,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     languageButtons.forEach(function (button) {
         button.addEventListener("click", function () {
-            const selectedLanguage =
+            const language =
                 button.dataset.language ||
                 (document.documentElement.lang === "ar" ? "en" : "ar");
 
-            if (selectedLanguage === "en") {
+            if (language === "en") {
                 document.documentElement.lang = "en";
                 document.documentElement.dir = "ltr";
             } else {
