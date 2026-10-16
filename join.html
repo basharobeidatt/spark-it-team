@@ -1,171 +1,213 @@
-<!doctype html>
-
-<html lang="en">
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#070b18">
-  <title>Join SPARK | SPARK · Zarqa University IT Team</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انضم إلى SPARK | فريق تكنولوجيا المعلومات</title>
+
+    <!-- اربط ملف التصميم الموجود في مشروعك -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .join-container {
+            width: min(92%, 700px);
+            margin: 40px auto;
+        }
+
+        .join-container h1,
+        .join-container > p {
+            text-align: center;
+        }
+
+        .form-card {
+            display: grid;
+            gap: 16px;
+            padding: 24px;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+        }
+
+        .form-card label {
+            display: grid;
+            gap: 7px;
+            font-weight: 600;
+        }
+
+        .form-card input,
+        .form-card select,
+        .form-card textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        .form-card textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .form-card button {
+            padding: 13px;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: bold;
+        }
+
+        .form-card button:disabled {
+            cursor: wait;
+            opacity: .65;
+        }
+
+        #formNotice {
+            display: none;
+            padding: 12px;
+            border-radius: 8px;
+            line-height: 1.7;
+        }
+
+        #formNotice.visible {
+            display: block;
+        }
+
+        #formNotice.success {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        #formNotice.error {
+            color: #991b1b;
+            background: #fee2e2;
+        }
+    </style>
 </head>
 
 <body>
-<div class="layout">
 
-  <aside class="sidebar" id="sidebar">
-    <a class="brand" href="index.html">
-      <img src="logo.png" alt="SPARK logo">
-      <span>SPARK<small>ZARQA UNIVERSITY IT TEAM</small></span>
-    </a>
+    <!-- إذا كان عندك شريط تنقل أصلي في join.html،
+         يمكنك إبقاءه بدل هذا العنوان البسيط. -->
 
-```
-<div class="nav-title" data-en="Navigation" data-ar="القائمة الرئيسية">Navigation</div>
+    <main class="join-container">
+        <h1>انضم إلى SPARK ⚡</h1>
 
-<nav class="navlinks">
-  <a href="index.html"><span class="nav-icon">⌂</span><span data-en="Home" data-ar="الرئيسية">Home</span></a>
-  <a href="about.html"><span class="nav-icon">✦</span><span data-en="About SPARK" data-ar="عن الفريق">About SPARK</span></a>
-  <a href="games.html"><span class="nav-icon">🎮</span><span data-en="SPARK Games" data-ar="فريق الألعاب">SPARK Games</span></a>
-  <a href="media.html"><span class="nav-icon">▣</span><span data-en="SPARK Media" data-ar="فريق الإعلام">SPARK Media</span></a>
-  <a href="members.html"><span class="nav-icon">♙</span><span data-en="Team Members" data-ar="أعضاء الفريق">Team Members</span></a>
-  <a class="active" href="join.html"><span class="nav-icon">＋</span><span data-en="Join the Team" data-ar="انضم للفريق">Join the Team</span></a>
-  <a href="contact.html"><span class="nav-icon">✉</span><span data-en="Contact" data-ar="تواصل معنا">Contact</span></a>
-</nav>
+        <p>
+            عندك شغف بالتكنولوجيا والألعاب وصناعة المحتوى؟
+            عبّي النموذج التالي وقدّم طلب الانضمام لفريقنا.
+        </p>
 
-<div class="sidebar-bottom">
-  <div data-en="Learn. Create. Innovate." data-ar="نتعلّم. نبدع. نبتكر.">Learn. Create. Innovate.</div>
-  <div class="social-mini">
-    <a href="https://www.instagram.com/spaarkzu?cplk=cTc1aGY5dGhlcWZv" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
-  </div>
-</div>
-```
+        <form class="form-card" id="joinForm" data-join-form>
 
-  </aside>
+            <label for="name">
+                الاسم الكامل
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    autocomplete="name"
+                    required
+                >
+            </label>
 
-  <div class="main">
-    <div class="topbar">
-      <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Open menu" aria-expanded="false">
-        ☰ <span data-en="Menu" data-ar="القائمة">Menu</span>
-      </button>
+            <label for="studentId">
+                الرقم الجامعي
+                <input
+                    type="text"
+                    id="studentId"
+                    name="studentId"
+                    required
+                >
+            </label>
 
-```
-  <div class="crumb">SPARK / Join SPARK</div>
+            <label for="email">
+                البريد الإلكتروني
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    autocomplete="email"
+                    required
+                >
+            </label>
 
-  <div class="top-actions">
-    <button class="lang-btn" id="langBtn" type="button">العربية</button>
-  </div>
-</div>
+            <label for="major">
+                التخصص الجامعي
+                <input
+                    type="text"
+                    id="major"
+                    name="major"
+                    required
+                >
+            </label>
 
-<main>
-  <div class="container page-head">
-    <div class="eyebrow">APPLICATIONS</div>
+            <label for="year">
+                السنة الدراسية
+                <select id="year" name="year" required>
+                    <option value="">اختر السنة الدراسية</option>
+                    <option value="First">السنة الأولى</option>
+                    <option value="Second">السنة الثانية</option>
+                    <option value="Third">السنة الثالثة</option>
+                    <option value="Fourth">السنة الرابعة</option>
+                    <option value="Other">أخرى</option>
+                </select>
+            </label>
 
-    <h1 data-en="Your next chapter <span>starts here.</span>"
-        data-ar="خطوتك القادمة <span>تبدأ من هنا.</span>">
-      Your next chapter <span>starts here.</span>
-    </h1>
+            <label for="phone">
+                رقم الهاتف
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    autocomplete="tel"
+                    required
+                >
+            </label>
 
-    <p data-en="Tell us about yourself, your interests, and the team you want to join."
-       data-ar="احكيلنا عن نفسك واهتماماتك والقسم اللي حاب تنضم إله.">
-      Tell us about yourself, your interests, and the team you want to join.
-    </p>
-  </div>
+            <label for="team">
+                الفريق الذي ترغب بالانضمام إليه
+                <select id="team" name="team" required>
+                    <option value="">اختر الفريق</option>
+                    <option value="Games">SPARK Games</option>
+                    <option value="Social Media">SPARK Media</option>
+                </select>
+            </label>
 
-  <div class="container section">
+            <label for="skills">
+                المهارات والخبرات
+                <textarea
+                    id="skills"
+                    name="skills"
+                    placeholder="مثلاً: Unity، برمجة، تصميم، مونتاج..."
+                ></textarea>
+            </label>
 
-    <form class="form-card" id="joinForm" data-join-form>
-      <div class="form-grid">
+            <label for="reason">
+                لماذا تريد الانضمام إلى SPARK؟
+                <textarea
+                    id="reason"
+                    name="reason"
+                    required
+                ></textarea>
+            </label>
 
-        <div class="field">
-          <label for="name">Full name / الاسم الكامل *</label>
-          <input id="name" name="name" type="text" required autocomplete="name">
-        </div>
+            <div id="formNotice" role="status" aria-live="polite"></div>
 
-        <div class="field">
-          <label for="studentId">University ID / الرقم الجامعي *</label>
-          <input id="studentId" name="studentId" type="text" required autocomplete="off">
-        </div>
+            <button type="submit" id="submitApplication">
+                إرسال طلب الانضمام
+            </button>
 
-        <div class="field">
-          <label for="email">Email / البريد الإلكتروني *</label>
-          <input id="email" name="email" type="email" required autocomplete="email" placeholder="name@example.com">
-        </div>
+        </form>
+    </main>
 
-        <div class="field">
-          <label for="major">Major / التخصص *</label>
-          <input id="major" name="major" type="text" required>
-        </div>
+    <!-- مهم: يجب تحميل المكتبة والإعدادات قبل script.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
 
-        <div class="field">
-          <label for="year">Study year / السنة الدراسية *</label>
-          <select id="year" name="year" required>
-            <option value="">Choose / اختر</option>
-            <option value="First">First / الأولى</option>
-            <option value="Second">Second / الثانية</option>
-            <option value="Third">Third / الثالثة</option>
-            <option value="Fourth">Fourth / الرابعة</option>
-            <option value="Other">Other / أخرى</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="phone">Phone number / رقم الهاتف *</label>
-          <input id="phone" name="phone" type="tel" required autocomplete="tel">
-        </div>
-
-        <div class="field">
-          <label for="team">Team / القسم *</label>
-          <select id="team" name="team" required>
-            <option value="">Choose / اختر</option>
-            <option value="Games">SPARK Games</option>
-            <option value="Social Media">SPARK Media</option>
-          </select>
-        </div>
-
-        <div class="field full">
-          <label for="skills">Skills and experience / المهارات والخبرات</label>
-          <textarea id="skills" name="skills" rows="4"></textarea>
-        </div>
-
-        <div class="field full">
-          <label for="reason">Why do you want to join? / لماذا تريد الانضمام؟ *</label>
-          <textarea id="reason" name="reason" rows="4" required></textarea>
-        </div>
-
-        <div class="field full">
-          <button class="btn primary" id="submitApplication" type="submit">
-            Submit application / إرسال الطلب ↗
-          </button>
-
-          <p class="hint"
-             data-en="Please check your information before submitting. Your application will be processed securely."
-             data-ar="تأكد من صحة معلوماتك قبل الإرسال. ستتم معالجة طلبك بطريقة آمنة.">
-            Please check your information before submitting. Your application will be processed securely.
-          </p>
-
-          <div class="notice" id="formNotice" role="status" aria-live="polite"></div>
-        </div>
-
-      </div>
-    </form>
-
-  </div>
-
-  <footer>
-    <div class="container foot">
-      <span>© <span data-year></span> SPARK · Zarqa University</span>
-      <span data-en="Built to learn. Made to create." data-ar="نتعلّم لنبدع، ونبدع لنترك أثرًا.">
-        Built to learn. Made to create.
-      </span>
-    </div>
-  </footer>
-</main>
-```
-
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="script.js"></script>
 </body>
 </html>
+```
