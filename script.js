@@ -143,16 +143,17 @@ if (joinForm) {
       };
 
 const application = {
-full_name: form.querySelector('[name="name"]').value.trim(),
-email: form.querySelector('[name="email"]').value.trim(),
-student_id: form.querySelector('[name="studentId"]').value.trim(),
-university_major: form.querySelector('[name="major"]').value.trim(),
-university_year: form.querySelector('[name="year"]').value,
-phone: form.querySelector('[name="phone"]').value.trim(),
-team_choice: form.querySelector('[name="team"]').value,
-skills: form.querySelector('[name="skills"]').value.trim() || null,
-motivation: form.querySelector('[name="reason"]').value.trim()
+full_name: getValue('name'),
+email: getValue('email'),
+student_id: getValue('studentId') || null,
+university_major: getValue('major'),
+university_year: getValue('year'),
+phone: getValue('phone') || null,
+team_choice: getValue('team'),
+skills: getValue('skills') || null,
+motivation: getValue('reason') || null
 };
+
 
 
 
