@@ -143,7 +143,7 @@ if (joinForm) {
           : '';
       };
 
-     const application = {
+const application = {
 full_name: form.querySelector('[name="name"]').value.trim(),
 email: form.querySelector('[name="email"]').value.trim(),
 student_id: form.querySelector('[name="studentId"]').value.trim(),
@@ -151,9 +151,10 @@ university_major: form.querySelector('[name="major"]').value.trim(),
 university_year: form.querySelector('[name="year"]').value,
 phone: form.querySelector('[name="phone"]').value.trim(),
 team_choice: form.querySelector('[name="team"]').value,
-skills: form.querySelector('[name="skills"]').value.trim(),
+skills: form.querySelector('[name="skills"]').value.trim() || null,
 motivation: form.querySelector('[name="reason"]').value.trim()
 };
+
 
 
       const { error } = await client
