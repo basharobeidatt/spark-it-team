@@ -1,4 +1,3 @@
-```javascript
 "use strict";
 
 /* SPARK website scripts */
