@@ -1,5 +1,3 @@
-"use strict";
-
 /* SPARK website scripts */
 
 (function () {
