@@ -143,16 +143,18 @@ if (joinForm) {
           : '';
       };
 
-      const application = {
-        full_name: getValue('name'),
-        student_id: getValue('studentId'),
-        university_major: getValue('major'),
-        university_year: getValue('year'),
-        phone: getValue('phone'),
-        team_choice: getValue('team'),
-        skills: getValue('skills'),
-        motivation: getValue('reason')
-      };
+     const application = {
+full_name: form.querySelector('[name="name"]').value.trim(),
+email: form.querySelector('[name="email"]').value.trim(),
+student_id: form.querySelector('[name="studentId"]').value.trim(),
+university_major: form.querySelector('[name="major"]').value.trim(),
+university_year: form.querySelector('[name="year"]').value,
+phone: form.querySelector('[name="phone"]').value.trim(),
+team_choice: form.querySelector('[name="team"]').value,
+skills: form.querySelector('[name="skills"]').value.trim(),
+motivation: form.querySelector('[name="reason"]').value.trim()
+};
+
 
       const { error } = await client
         .from('join_requests')
